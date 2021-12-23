@@ -7,6 +7,7 @@ import Goods from '@/components/pages/goods.vue'
 import CategoryList from '@/components/pages/categoryList.vue'
 import Cart from '@/components/pages/cart.vue'
 import Main from '@/components/pages/main.vue'
+import Member from '@/components/pages/member.vue'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
           component: ShopMall
         },
         {
+          path: '/member',
+          name: 'Member',
+          component: Member
+        },
+        {
           path: '/categorylist',
           name: 'CategoryList',
           component: CategoryList
@@ -34,6 +40,10 @@ export default new Router({
           component: Cart
         }
       ]
+    },
+    {
+      path: '/',
+      redirect:'/main'
     },
     {
       path: '/register',

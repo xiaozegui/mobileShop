@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 const Router = require('koa-router');
 const fs = require('fs');
+const request = require('request');
+var koa2Req = require('koa2-request');
 
 let goods = new Router();
 
-goods.get('/insertAllGoodsInfo', async (ctx) => {
+goods.get('/insertAll', async (ctx) => {
+
     fs.readFile('./dataJson/newGoods.json', 'utf8', (err, data) => {
-        if (err) return console.log(err);
         data = JSON.parse(data)
         let saveCount = 0
         const Goods = mongoose.model('Goods')
         data.map((value, index) => {
-            console.log(value)
             let newGoods = new Goods(value)
             newGoods.save().then(() => {
                 saveCount++
@@ -20,9 +21,47 @@ goods.get('/insertAllGoodsInfo', async (ctx) => {
                 console.log('失败：' + error)
             })
         })
+
+
+    })
+    ctx.body = "开始导"
+})
+
+
+goods.get('/insertAllGoodsInfo', async (ctx) => {
+    fs.readFile('./dataJson/newGoods.json', 'utf8', async (err, data) => {
+        if (err) return console.log(err);
+        data = JSON.parse(data);
+        let saveCount = 0
+        const Goods = mongoose.model('Goods')
+        for (let i in data) {
+            try {
+                let url = data[i].IMAGE1
+                let status = await new Promise((resolve, reject) => {
+                    request(url, function (error, response, body) {
+                        if (error) return reject(error);
+                        resolve(response.statusCode);
+                    });
+                })
+                console.log(status);
+            } catch (error) {
+                console.log('错误');
+                continue;
+            }
+            let newGoods = new Goods(data[i])
+            newGoods.save().then(() => {
+                saveCount++
+                console.log('成功' + saveCount)
+            }).catch(error => {
+                console.log('失败：' + error)
+            })
+        }
     })
     ctx.body = "开始导入数据"
 })
+
+
+
 
 goods.get('/insertAllCategory', async (ctx) => {
     fs.readFile('./dataJson/category.json', 'utf8', (err, data) => {
@@ -89,8 +128,8 @@ goods.get('/getCategoryList', async (ctx) => {
 
 goods.post('/getGoodsListByCategorySubID', async (ctx) => {
     try {
-
         let categorySubId = ctx.request.body.categorySubId //小类别
+        // console.log(categorySubId);
         let page = ctx.request.body.page
         let num = 10 //每页显示数量
         let start = (page - 1) * num
