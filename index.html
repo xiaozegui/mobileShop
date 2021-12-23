@@ -2,11 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title>mobile-shop</title>
   </head>
   <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <script type="text/javascript">
+      let htmlWidth = document.documentElement.clientWidth || document.body.clientWidth
+      if(htmlWidth>=750) htmlWidth =750;
+      let htmlDom = document.querySelector('html');
+      htmlDom.style.fontSize = htmlWidth/20+'px';
+    </script>
   </body>
 </html>

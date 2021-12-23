@@ -3,8 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {Button} from 'vant'
-Vue.use(Button);
+import {Tabbar,TabbarItem,PullRefresh,Stepper,Tab,Tabs,Button,Row,Col,Swipe, SwipeItem,Lazyload,List,Field,NavBar,Toast} from 'vant'
+Vue.use(Tabbar).use(TabbarItem).use(PullRefresh).use(Stepper).use(Tabs).use(Tab).use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List).use(Field).use(NavBar)
+.use(Toast);
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
